@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JS + CSS Clock | 锥子时钟</title>
+</head>
+
+<body>
+
+
+    <div class="clock">
+        <div class="clock-face">
+            <div class="hand shake-hand hour-hand shadow"></div>
+            <div class="hand shake-hand min-hand shadow"></div>
+            <div class="hand shake-hand second-hand shadow"></div>
+            <div class="hand shake-hand hour-hand"></div>
+            <div class="hand shake-hand min-hand"></div>
+
+            <div class="big-center"></div>
+
+            <div class="hand shake-hand second-hand"></div>
+            <div class="small-center"></div>
+
+        </div>
+    </div>
+
+
+    <style>
+        html {
+            /* background: #018DED url(http://unsplash.it/1500/1000?image=881&blur=50); */
+            background-size: cover;
+            font-family: 'helvetica neue';
+            text-align: center;
+            font-size: 10px;
+        }
+
+        body {
+            margin: 0;
+            font-size: 2rem;
+            display: flex;
+            flex: 1;
+            min-height: 100vh;
+            align-items: center;
+        }
+
+        .clock {
+            width: 30rem;
+            height: 30rem;
+            border: 20px solid white;
+            /* border-radius: 50%; */
+            margin: 50px auto;
+            position: relative;
+            padding: 2rem;
+            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1),
+            inset 0 0 0 3px #EFEFEF,
+            inset 0 0 10px black,
+            0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .clock-face {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            margin: 50% 0 0 50%;
+            transform: translateY(-3px);
+            /* account for the height of the clock hands */
+        }
+
+        .hand {
+            width: 50%;
+            height: 6px;
+            background: black;
+            position: absolute;
+            transform-origin: 0;
+        }
+
+        .shake-hand {
+            transition: all 0.05s;
+            transition-timing-function: cubic-bezier(0, 1.39, 0.7, 1.49);
+        }
+
+        .second-hand {
+            background: rgb(174, 79, 78);
+            height: 3px;
+            width: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        .min-hand {
+            height: 20px;
+            width: 40%;
+            transform: translateY(-10px) rotate(-90deg);
+            border-radius: 10px;
+            background: rgb(81, 81, 81);
+        }
+
+        .hour-hand {
+            height: 20px;
+            width: 30%;
+            transform: translateY(-10px) rotate(-90deg);
+            border-radius: 10px;
+            background: rgb(81, 81, 81);
+        }
+
+        .shadow {
+            transform: translate(-5px, -5px) rotate(-90deg);
+            background-color: #ccc;
+            filter: blur(2.1px);
+        }
+
+        .second-hand.shadow {
+            transform: translate(-5px, 5px) rotate(-90deg);
+        }
+
+        .big-center {
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            background: rgb(81, 81, 81);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            box-shadow: 0px 3px 4px 0px black;
+        }
+
+        .small-center {
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            background: rgb(174, 79, 78);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            box-shadow: 0px 1px 4px 0px black;
+        }
+    </style>
+
+    <script>
+        const secondHand = document.querySelector('.second-hand:not(.shadow)');
+        const minHand = document.querySelector('.min-hand:not(.shadow)');
+        const hourHand = document.querySelector('.hour-hand:not(.shadow)');
+        const secondHandShadow = document.querySelector('.second-hand.shadow');
+        const minHandShadow = document.querySelector('.min-hand.shadow');
+        const hourHandShadow = document.querySelector('.hour-hand.shadow');
+
+        function transformHands(hand, handShadow, degrees) {
+            hand.style.transform = `translateY(-10px) rotate(${degrees}deg)`;
+            handShadow.style.transform = `rotate(${degrees}deg)`;
+        }
+
+        function toggleShakeHand(hand, handShadow, time) {
+            if (time == 0) {
+                hand.classList.toggle('shake-hand');
+                handShadow.classList.toggle('shake-hand');
+            } else if (time == 1) {
+                hand.classList.toggle('shake-hand');
+                handShadow.classList.toggle('shake-hand');
+            }
+        }
+
+        function showSecondHand(now) {
+            const seconds = now.getSeconds();
+            const degrees = ((seconds / 60) * 360 - 90) % 360;
+            toggleShakeHand(secondHand, secondHandShadow, seconds);
+            secondHand.style.transform = `translateY(-50%) rotate(${degrees}deg)`;
+            secondHandShadow.style.transform = `translate(-5px, 5px) rotate(${degrees}deg)`;
+        }
+
+        function showMinHand(now) {
+            const minutes = now.getMinutes();
+            const degrees = ((minutes / 60) * 360 - 90) % 360;
+            toggleShakeHand(minHand, minHandShadow, minutes);
+            transformHands(minHand, minHandShadow, degrees);
+        }
+
+        function showHourHand(now) {
+            const hours = now.getHours();
+            const degrees = ((hours / 12) * 360 - 90) % 360;
+            toggleShakeHand(hourHand, hourHandShadow, hours);
+            transformHands(hourHand, hourHandShadow, degrees);
+        }
+
+        function setDate() {
+            const now = new Date();
+            showSecondHand(now);
+            showMinHand(now);
+            showHourHand(now);
+        }
+        setDate();
+        setInterval(setDate, 1000);
+    </script>
+</body>
+
+</html>
