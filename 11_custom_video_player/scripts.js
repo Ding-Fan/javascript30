@@ -1,3 +1,5 @@
+// https://developer.mozilla.org/en-US/Apps/Fundamentals/Audio_and_video_delivery/cross_browser_video_player
+
 // Get our elements
 const player = document.querySelector('.player');
 const videoContainer = player.querySelector('.video-container');
