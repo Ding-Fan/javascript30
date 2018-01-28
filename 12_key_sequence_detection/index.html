@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-color: #000000;
+      background-image: url("https://i.amz.mshcdn.com/2BrPLT7CBA4q4AELMRDzXkxbAlM=/950x534/filters:quality(90)/2013%2F08%2F30%2F06%2FKonami.056d1.jpg");
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    pressed = [];
+    secretCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+    secretCodeLength = 10;
+    window.addEventListener('keyup', (e) => {
+      console.log(e.key);
+      pressed.push(e.key);
+      if (pressed.length >= secretCodeLength + 1) {
+        pressed.shift();
+      }
+      console.log(pressed);
+      if (pressed.join('') == secretCode) {
+        cornify_add();
+        pressed = [];
+      }
+    });
+  </script>
+</body>
+
+</html>
